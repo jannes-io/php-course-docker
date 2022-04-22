@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7.30
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - mysqldb:/var/lib/mysql
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: mailcatcher
+    ports:
+      - 1025:1025
+      - 1080:1080
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8080:80
+    links:
+      - mysql:db
+  web:
+    image: php:8.1-apache
+    container_name: web
+    ports:
+      - 80:80
+    volumes:
+      - './src:/var/www/html:delegated'
+    links:
+      - mysql
+      - mailcatcher
+
+volumes:
+  mysqldb:
