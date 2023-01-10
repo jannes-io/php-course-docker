@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   mysql:
-    image: mysql:5.7.30
+    image: mysql:latest
     container_name: mysql
     ports:
       - 3306:3306
@@ -24,8 +24,8 @@ services:
     links:
       - mysql:db
   web:
-    image: php:8.1-apache
     container_name: web
+    build: .
     ports:
       - 80:80
     volumes:
